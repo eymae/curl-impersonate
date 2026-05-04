@@ -7617,7 +7617,7 @@ index 69d54ecce2..2807fc3747 100644
 +/* HTTP/3 GREASE setting identifiers follow: 0x1f * N + 0x21 */
 +#define H3_SETTINGS_GREASE_ID_BASE  UINT64_C(0x21)
 +#define H3_SETTINGS_GREASE_ID_STEP  UINT64_C(0x1f)
-+#define H3_VARINT_MAX               UINT64_C(0x3fffffff)
++#define H3_VARINT_MAX               UINT64_C(0xffffffff)
 +
 +static bool h3_rand_u64(struct Curl_easy *data, uint64_t *val)
 +{
@@ -7641,7 +7641,7 @@ index 69d54ecce2..2807fc3747 100644
 +{
 +  uint64_t n;
 +  uint64_t value;
-+  uint64_t max_n = UINT64_C(0xFFFFFFFF);
++  uint64_t max_n = H3_VARINT_MAX;
 +
 +
 +  if(!h3_rand_u64(data, &n) || !h3_rand_u64(data, &value))

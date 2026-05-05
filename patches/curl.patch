@@ -7464,7 +7464,7 @@ index 69d54ecce2..2807fc3747 100644
 +      }
 +    }
 +
-+    if(has_value && id == QUIC_TP_VERSION_INFORMATION || id == QUIC_TP_VERSION_INFORMATION_DRAFT) {
++    if(has_value && id == QUIC_TP_VERSION_INFORMATION || has_value && id == QUIC_TP_VERSION_INFORMATION_DRAFT) {
 +      result = quic_append_version_information(raw, id, value_str, data);
 +      if(result)
 +        goto out;

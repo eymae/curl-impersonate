@@ -19,17 +19,11 @@ permissions:
 jobs:
   build-windows:
     name: Build windows binaries
-<<<<<<< HEAD
-    runs-on: windows-latest
-=======
     strategy:
       matrix:
         include:
           - { sys: vcvars64, env: x86_64, runner: windows-2022 }
-          - { sys: vcvars32, env: i686, runner: windows-2022 }
-          - { sys: vcvarsarm64, env: arm64, runner: windows-11-arm }
     runs-on: ${{ matrix.runner }}
->>>>>>> v2.0.0rc5
     steps:
       - name: configure Pagefile
         uses: al-cheb/configure-pagefile-action@v1.3
@@ -50,11 +44,6 @@ jobs:
         shell: cmd
         run: choco install nasm -y
 
-<<<<<<< HEAD
-      - name: Fetch and patch deps
-        shell: bash
-        run: ./win/deps.sh
-=======
       - name: Install Ninja for Win-ARM64
         shell: pwsh
         if: matrix.runner == 'windows-11-arm'
@@ -62,29 +51,17 @@ jobs:
           Invoke-WebRequest https://github.com/ninja-build/ninja/releases/download/v1.13.1/ninja-winarm64.zip -OutFile ninja-winarm64.zip
           Expand-Archive ninja-winarm64.zip -DestinationPath ninja
           Copy-Item ninja\ninja.exe -Destination "C:\Windows\System32"
->>>>>>> v2.0.0rc5
 
       # - name: Setup tmate session for debugging
       #   uses: mxschmitt/action-tmate@v3
 
       - name: Build
         shell: cmd
-<<<<<<< HEAD
-        run: ./win/build.bat vcvars64
-        env:
-          DISABLE_ASM_ARM64: false
-=======
         run: ./win/build.bat ${{ matrix.sys }}
->>>>>>> v2.0.0rc5
 
       - name: Build tarballs
         shell: bash
         run: |
-<<<<<<< HEAD
-          NAME=${{ github.ref_name }}
-          if [ -z "$NAME" ]; then
-            NAME=dev
-=======
           set -euo pipefail
           suffix="${{ matrix.env }}-win32"
           if [[ "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]]; then
@@ -94,7 +71,6 @@ jobs:
           else
             curl_tar="curl-impersonate-${suffix}.tar.gz"
             lib_tar="libcurl-impersonate-${suffix}.tar.gz"
->>>>>>> v2.0.0rc5
           fi
           tar -czf "$curl_tar" -C packages/bin .
           tar -czf "$lib_tar"  -C packages lib include
@@ -104,12 +80,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-<<<<<<< HEAD
-          name: artifacts.windows.x86_64
-          path: ./libcurl-impersonate*.tar.gz
-=======
           name: artifacts.windows.${{ matrix.env }}
           path: |
             ./curl-impersonate*.tar.gz
             ./libcurl-impersonate*.tar.gz
->>>>>>> v2.0.0rc5
